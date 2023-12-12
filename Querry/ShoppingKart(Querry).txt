@@ -1,0 +1,45 @@
+CREATE TABLE `persondetails` (
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `dob` varchar(45) DEFAULT NULL,
+  `contactno` varchar(45) DEFAULT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+
+CREATE TABLE `productdetails` (
+  `id` int NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `storename` varchar(45) DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
+  `warantee` varchar(45) DEFAULT NULL,
+  `productdetails` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+
+CREATE TABLE `orderdetails` (
+  `orderid` int NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `productid` int NOT NULL,
+  `orderdate` varchar(45) DEFAULT NULL,
+  `deliverydate` varchar(45) DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `deliveryaddress` varchar(45) DEFAULT NULL,
+  `paymentmethod` varchar(45) DEFAULT NULL,
+  `onlineoffline` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`orderid`),
+  KEY `username_idx` (`username`),
+  KEY `id_idx` (`productid`),
+  CONSTRAINT `id` FOREIGN KEY (`productid`) REFERENCES `productdetails` (`id`),
+  CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `persondetails` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
