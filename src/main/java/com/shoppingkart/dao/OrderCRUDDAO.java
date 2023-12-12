@@ -5,46 +5,55 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.shoppingkart.dto.OrderDetailDTO;
-import com.shoppingkart.dto.ProductDetailDTO;
 
 public class OrderCRUDDAO {
-	private String insert = "INSERT INTO orderdetails (orderid, username, productid, orderdate, deliverydate, quantity, deliveryaddress, paymentmethod, onlineoffline) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private String getproductid = "SELECT id FROM productdetails";
+	private String insert = "INSERT INTO orderdetails (orderid, username, productid, orderdate, deliverydate, quantity, deliveryaddress, paymentmethod, plateformname) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private int rowsAffected = 0;
 	PreparedStatement pstmt;
-	ProductDetailDTO productdto;
-	private int productid;
 
 	public OrderDetailDTO addOrder(OrderDetailDTO orderdto) {
-
 		try {
-			boolean status = false;
-			String sql = "SELECT 1 FROM productdetails where id = ?";
-			pstmt = DataBaseConnection.getConnection().prepareStatement(sql);
-			pstmt.setInt(1, orderdto.getProductid());
+			boolean personstatus = false;
+			String personsql = "SELECT 1 FROM persondetails where username = ?";
+			pstmt = DataBaseConnection.getConnection().prepareStatement(personsql);
+			pstmt.setString(1, orderdto.getUsername());
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
-				status = true;
+			if (rs.next()) {
+				//System.out.println("User is exist");
+				personstatus = true;
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 
 		}
-		
 		try {
-			pstmt = DataBaseConnection.getConnection().prepareStatement(getproductid);
+			boolean productstatus = false;
+			String productsql = "SELECT 1 FROM productdetails where id = ?";
+			pstmt = DataBaseConnection.getConnection().prepareStatement(productsql);
+			pstmt.setInt(1, orderdto.getProductid());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				productstatus = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+
+		try {
 			pstmt = DataBaseConnection.getConnection().prepareStatement(insert);
 
 			pstmt.setInt(1, orderdto.getOrderid());
-			pstmt.setString(2, orderdto.getUserName());
-			pstmt.setInt(3, orderdto.getOrderid());
+			pstmt.setString(2, orderdto.getUsername());
+			pstmt.setInt(3, orderdto.getProductid());
 			pstmt.setString(4, orderdto.getOrderdate());
 			pstmt.setString(5, orderdto.getDeliverydate());
 			pstmt.setInt(6, orderdto.getQuantity());
 			pstmt.setString(7, orderdto.getDeliveryaddress());
 			pstmt.setString(8, orderdto.getPaymentmethod());
-			pstmt.setString(9, orderdto.getDeliveryaddress());
+			pstmt.setString(9, orderdto.getPlateformname());
 			rowsAffected = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -52,10 +61,10 @@ public class OrderCRUDDAO {
 		}
 
 		if (rowsAffected > 0) {
-			System.out.println(orderdto.getOrderid() + " added successfully in your kart!");
+			System.out.println(orderdto.getOrderid() + " product added successfully in your kart!");
 			return orderdto;
 		} else {
-			System.out.println(orderdto.getOrderid() + " Failed to add in your kart.");
+			System.out.println(orderdto.getOrderid() + " product Failed to add in your kart.");
 			return null;
 		}
 	}

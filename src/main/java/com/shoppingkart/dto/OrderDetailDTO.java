@@ -3,13 +3,13 @@ package com.shoppingkart.dto;
 public class OrderDetailDTO {
 	private int orderid;
 	private int productid;
-	private String userName;
+	private String username;
 	private String orderdate;
 	private String deliverydate;
 	private int quantity;
-	private String plateformname;
 	private String deliveryaddress;
 	private String paymentmethod;
+	private String plateformname;
 
 	public int getOrderid() {
 		return orderid;
@@ -27,12 +27,13 @@ public class OrderDetailDTO {
 		this.productid = productid;
 	}
 
-	public String getUserName() {
-		return userName;
+
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getOrderdate() {
@@ -85,7 +86,7 @@ public class OrderDetailDTO {
 
 	@Override
 	public String toString() {
-		return "OrderDetailDTO [orderid=" + orderid + ", productid=" + productid + ", userName=" + userName
+		return "OrderDetailDTO [orderid=" + orderid + ", productid=" + productid + ", userName=" + username
 				+ ", orderdate=" + orderdate + ", deliverydate=" + deliverydate + ", quantity=" + quantity
 				+ ", plateformname=" + plateformname + ", deliveryaddress=" + deliveryaddress + ", paymentmethod="
 				+ paymentmethod + "]";
