@@ -1,15 +1,22 @@
 package com.shoppingkart.dao;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.shoppingkart.dto.PersonDetailDTO;
 
 public class PersonCRUDDAO {
 
 	private String insert = "INSERT INTO persondetails (username, password, name, dob, contactno, address) VALUES (?, ?, ?, ?, ?, ?)";
+	private String fetch = "SELECT * FROM persondetails";
+	private String update;
 	private int rowsAffected = 0;
 	PreparedStatement pstmt;
+	List<PersonDetailDTO> person;
+	private PersonDetailDTO personfetch;
 
 	public PersonDetailDTO addPerson(PersonDetailDTO persondto) {
 		try {
@@ -33,6 +40,58 @@ public class PersonCRUDDAO {
 			return persondto;
 		} else {
 			System.out.println(persondto.getName() + " Failed to add.");
+			return null;
+		}
+	}
+
+	public List<PersonDetailDTO> getAllTasks() {
+
+		person = new ArrayList<>();
+
+		try {
+			pstmt = DataBaseConnection.getConnection().prepareStatement(fetch);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				personfetch = new PersonDetailDTO();
+				// String pass = PasswordEncryption.encryptPassword(rs.getString("password"));
+				personfetch.setName(rs.getString("name"));
+				personfetch.setUserName(rs.getString("username"));
+				personfetch.setPassword(rs.getString("password"));
+				personfetch.setDob(rs.getString("dob"));
+				personfetch.setContact(rs.getString("contactno"));
+				personfetch.setAddress(rs.getString("address"));
+
+				person.add(personfetch);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return person;
+	}
+
+	public PersonDetailDTO updatePerson(String username, PersonDetailDTO persondto) {
+		// username, password, name, dob, contactno, address
+		update = "UPDATE persondetails SET name = '" + persondto.getName() + "', password = '" + persondto.getPassword()
+				+ "', dob = '" + persondto.getDob() + "', contactno = " + persondto.getContact() + ", address = '"
+				+ persondto.getAddress() + " WHERE username ='" + username + "'";
+		System.out.println("\n"+update+"\n");
+		try {
+			pstmt = DataBaseConnection.getConnection().prepareStatement(update);
+
+			rowsAffected = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (rowsAffected > 0) {
+			// System.out.println(task + " Task updated successfully!");
+			return persondto;
+		} else {
+			// System.out.println(task + " Failed to update.");
 			return null;
 		}
 	}
