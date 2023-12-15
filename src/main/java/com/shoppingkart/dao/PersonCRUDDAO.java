@@ -68,16 +68,14 @@ public class PersonCRUDDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return person;
 	}
 
 	public PersonDetailDTO updatePerson(String username, PersonDetailDTO persondto) {
-		// username, password, name, dob, contactno, address
+		persondto.setUserName(username);
 		update = "UPDATE persondetails SET name = '" + persondto.getName() + "', password = '" + persondto.getPassword()
-				+ "', dob = '" + persondto.getDob() + "', contactno = " + persondto.getContact() + ", address = '"
-				+ persondto.getAddress() + " WHERE username ='" + username + "'";
-		System.out.println("\n"+update+"\n");
+				+ "', dob = '" + persondto.getDob() + "', contactno = '" + persondto.getContact() + "', address = '"
+				+ persondto.getAddress() + "' WHERE username = '" + username + "'";
 		try {
 			pstmt = DataBaseConnection.getConnection().prepareStatement(update);
 
@@ -88,12 +86,9 @@ public class PersonCRUDDAO {
 		}
 
 		if (rowsAffected > 0) {
-			// System.out.println(task + " Task updated successfully!");
 			return persondto;
 		} else {
-			// System.out.println(task + " Failed to update.");
 			return null;
 		}
 	}
-
 }
