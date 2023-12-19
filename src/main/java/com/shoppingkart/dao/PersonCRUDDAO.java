@@ -13,6 +13,8 @@ public class PersonCRUDDAO {
 	private String insert = "INSERT INTO persondetails (username, password, name, dob, contactno, address) VALUES (?, ?, ?, ?, ?, ?)";
 	private String fetch = "SELECT * FROM persondetails";
 	private String update;
+	private String childdelete;
+	private String parantdelete;
 	private int rowsAffected = 0;
 	PreparedStatement pstmt;
 	List<PersonDetailDTO> person;
@@ -89,6 +91,27 @@ public class PersonCRUDDAO {
 			return persondto;
 		} else {
 			return null;
+		}
+	}
+
+	public boolean deletePerson(String username) {
+
+		childdelete = "DELETE FROM  orderdetails WHERE username= '" + username + "'";
+		parantdelete = "DELETE FROM  persondetails WHERE username= '" + username + "'";
+		try {
+			pstmt = DataBaseConnection.getConnection().prepareStatement(childdelete);
+			rowsAffected = pstmt.executeUpdate();
+			pstmt = DataBaseConnection.getConnection().prepareStatement(parantdelete);
+			rowsAffected = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (rowsAffected > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

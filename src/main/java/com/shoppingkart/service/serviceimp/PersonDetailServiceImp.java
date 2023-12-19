@@ -33,4 +33,11 @@ public class PersonDetailServiceImp implements PersonDetailService {
 		return persondto;
 	}
 
+	@Override
+	public boolean deletePerson(String username) {
+		personcruddao = new PersonCRUDDAO();
+		boolean deleted = personcruddao.deletePerson(username);
+		return deleted;
+	}
+
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,4 +54,18 @@ public class PersonDetailController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@DeleteMapping("/delete/{username}")
+	public ResponseEntity<Void> deletePerson(@PathVariable String username) {
+		personservice = new PersonDetailServiceImp();
+		// System.out.println("\n" + task + "\n");
+		boolean deleted = personservice.deletePerson(username);
+		if (deleted) {
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
+	}
+	
 }
